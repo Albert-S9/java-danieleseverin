@@ -1,0 +1,8 @@
+Mi chiamo Daniele e ho 31 anni. 
+Dopo il diploma al liceo Socio Psicopedagogico ho iniziato 
+a lavorare principalmente come addetto vendite in vari negozi. 
+Con l'arrivo della pandemia ho deciso di cambiare radicalmente 
+carriera e di formarmi frequentando il corso ENGIM 
+di Tecnico di Sviluppo Software. 
+Le mie precedenti esperienze di programmazione includono 
+le basi di c++ e html affrontate al liceo.
