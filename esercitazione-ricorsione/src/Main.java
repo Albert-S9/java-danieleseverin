@@ -1,3 +1,7 @@
+//esercizi da pagina 297 (323)
+
+import java.util.Arrays;
+
 public class Main {
 
     public static int fattoriale(int n){
@@ -101,6 +105,43 @@ public class Main {
                 return trovaMax(newArray2);
         }
     }
+
+    //Scrivere un algoritmo ricorsivo di ricerca ternaria che divida un array
+    // in tre parti anziché le due utilizzate dalla ricerca binaria.
+
+    public static int trovaMaxTernario (int[] array){
+        if(array.length==1)
+            return array[0];
+        if(array.length==2) {
+            if (array[0] > array[1])
+                return array[0];
+            else
+                return array[1];
+        } else {
+            int terzoLunghezza = array.length/3;
+            int[] newArray1 = new int[terzoLunghezza];
+            int[] newArray2 = new int[terzoLunghezza];
+            int[] newArray3 = new int[array.length - terzoLunghezza*2];
+
+            for(int i=0; i<newArray1.length; i++)
+                newArray1[i] = array[i];
+
+            for(int j=0; j<newArray2.length; j++)
+                newArray2[j] = array[j + newArray1.length];
+
+            for(int k=0; k<newArray3.length; k++)
+                newArray3[k] = array[k + newArray1.length*2];
+
+            int[] newArray4 = new int[3];
+            newArray4[0] = trovaMaxTernario(newArray1);
+            newArray4[1] = trovaMaxTernario(newArray2);
+            newArray4[2] = trovaMaxTernario(newArray3);
+
+            Arrays.sort(newArray4);
+
+            return newArray4[2];
+        }
+    }
     
     public static void main(String[] args) {
 
@@ -124,7 +165,7 @@ public class Main {
         System.out.println("calcolaDieciAlla: " + calcolaDieciAlla(4));
 
         int[] array = new int[5];
-        array[0] = 12;
+        array[0] = 5;
         array[1] = 2;
         array[2] = 6;
         array[3] = 4;
@@ -134,6 +175,8 @@ public class Main {
         System.out.println("sommaElementiArray: " + sommaElementiArray(array, n));
 
         System.out.println("trovaMax: " + trovaMax(array));
+
+        System.out.println("trovaMaxTernario: " + trovaMaxTernario(array));
 
     }
 }
