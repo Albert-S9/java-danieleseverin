@@ -73,10 +73,34 @@ public class Main {
     }
 
     /*7. Scrivere un metodo ricorsivo che trovi e restituisca il valore più grande in un array di interi.
-    Suggerimento: dividere Tarray a metà e cercare rìcorsivamentc il valore massimo in ogni metà.
+    Suggerimento: dividere l'array a metà e cercare rìcorsivamente il valore massimo in ogni metà.
     Restituire il maggiore tra i due valori.
      */
-    
+    public static int trovaMax(int[] array){
+        if(array.length==1)
+            return array[0];
+        if(array.length==2) {
+            if (array[0] > array[1])
+                return array[0];
+            else
+                return array[1];
+        } else {
+            int metaLunghezza = array.length / 2;
+            int[] newArray1 = new int[metaLunghezza];
+            int[] newArray2 = new int[array.length - metaLunghezza];
+
+            for(int i=0; i<newArray1.length; i++)
+                newArray1[i] = array[i];
+
+            for(int j=0; j<newArray2.length; j++)
+                newArray2[j] = array[j + newArray1.length];
+
+            if(trovaMax(newArray1) > trovaMax(newArray2))
+                return trovaMax(newArray1);
+            else
+                return trovaMax(newArray2);
+        }
+    }
     
     public static void main(String[] args) {
 
@@ -100,14 +124,16 @@ public class Main {
         System.out.println("calcolaDieciAlla: " + calcolaDieciAlla(4));
 
         int[] array = new int[5];
-        array[0] = 1;
+        array[0] = 12;
         array[1] = 2;
-        array[2] = 3;
+        array[2] = 6;
         array[3] = 4;
         array[4] = 5;
         int n = array.length-1;
 
         System.out.println("sommaElementiArray: " + sommaElementiArray(array, n));
+
+        System.out.println("trovaMax: " + trovaMax(array));
 
     }
 }
