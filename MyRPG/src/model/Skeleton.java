@@ -6,8 +6,9 @@ public class Skeleton extends Enemy{
 
     ImageIcon skeleton = new ImageIcon("src/resources/skeleton.png");
 
-    public Skeleton(int x, int y) {
-        super(x, y);
+    public Skeleton(int x, int y, int MAX_HP, int hp) {
+        super(x, y, MAX_HP, hp);
+        this.damage = 1;
         loadImage();
         setDimensions();
     }

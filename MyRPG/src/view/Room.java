@@ -4,11 +4,8 @@ import controller.Game;
 import model.*;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 import javax.swing.*;
 import java.util.List;
 
@@ -43,8 +40,12 @@ public class Room extends JPanel{
         drawBackground(g);
         drawPC(g);
         drawEnemies(g);
+        drawDamageEffect(g);
         drawObjects(g);
         drawSpells(g);
+        drawSword(g);
+
+        g.drawString("HP:  " + pc.getHp(), 300, 15);
     }
 
     private void drawBackground(Graphics g) {
@@ -67,6 +68,18 @@ public class Room extends JPanel{
         }
     }
 
+    private void drawDamageEffect(Graphics g){
+        DamageEffect de = pc.getDamageEffect();
+        if (de != null && de.isVisible())
+            g.drawImage(de.getImage(), de.getX(), de.getY(), this);
+
+        for (Enemy enemy : enemies) {
+            DamageEffect da = enemy.getDamageEffect();
+            if (da != null && da.isVisible())
+                g.drawImage(da.getImage(), da.getX(), da.getY(), this);
+        }
+    }
+
     private void drawSpells(Graphics g){
         List<Spell> sp = pc.getSpells();
         for (Spell spell : sp) {
@@ -75,6 +88,13 @@ public class Room extends JPanel{
                         spell.getY(), this);
             }
         }
+    }
+
+    private void drawSword(Graphics g){
+        Sword sword = pc.getSword();
+        if (pc.isAttacking())
+            g.drawImage(sword.getImage(), sword.getX(),
+                    sword.getY(), this);
     }
 
     private class TAdapter extends KeyAdapter {

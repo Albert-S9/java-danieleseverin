@@ -4,10 +4,10 @@ import java.awt.*;
 
 public abstract class Sprite {
 
-    private int x;
-    private int y;
+    protected int x;
+    protected int y;
 
-    private Image image;
+    protected Image image;
 
     public Sprite(int x, int y) {
         this.x = x;

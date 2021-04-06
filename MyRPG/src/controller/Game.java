@@ -13,6 +13,7 @@ import java.util.List;
 
 public class Game extends JFrame implements ActionListener {
 
+    private Room room1;
     private PC pc;
     private List<SolidObject> objects = new ArrayList<>();
     private List<Enemy> enemies = new ArrayList<>();
@@ -37,18 +38,18 @@ public class Game extends JFrame implements ActionListener {
         Background background = new Background(imageIcon);
 
         //creo pc
-        pc = new PC(5, 5, "down");
+        pc = new PC(5, 5, "down", 100, 100);
 
         //creo lista di oggetti
         objects.add(new Tree(100,100));
         objects.add(new Tree(300,300));
 
         //creo lista di nemici
-        enemies.add(new Skeleton(200,200));
-        enemies.add(new Skeleton(400,200));
+        enemies.add(new Skeleton(200,200, 100, 100));
+        enemies.add(new Skeleton(400,200, 100, 100));
 
         //inizializzo la stanza
-        Room room1 = new Room(this, background, pc, objects, enemies);
+        room1 = new Room(this, background, pc, objects, enemies);
         add(room1);
 
         setVisible(true);
@@ -62,7 +63,7 @@ public class Game extends JFrame implements ActionListener {
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_SPACE) {
-            //teleport();
+            teleport();
         }
 
         if (key == KeyEvent.VK_Z) {
@@ -70,8 +71,8 @@ public class Game extends JFrame implements ActionListener {
         }
 
         if (key == KeyEvent.VK_X) {
-            //attack();
-            //attacking = true;
+            pc.attack();
+            pc.setAttacking(true);
         }
 
         if (key == KeyEvent.VK_LEFT) {
@@ -108,7 +109,8 @@ public class Game extends JFrame implements ActionListener {
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_X) {
-            // attacking = false;
+            pc.setAttacking(false);
+            pc.setSword(null);
         }
 
         if (key == KeyEvent.VK_LEFT) {
@@ -135,6 +137,7 @@ public class Game extends JFrame implements ActionListener {
 
     private void gameCycle(){
         move();
+        updateDamageEffect();
         checkCollisions();
         repaint();
         updateSpells();
@@ -148,11 +151,22 @@ public class Game extends JFrame implements ActionListener {
         }
     }
 
+    private void updateDamageEffect(){
+        if(pc.getDamageEffect() != null)
+            pc.setDamageEffectNotVisible();
+
+        for (Enemy enemy : enemies) {
+            if(enemy.getDamageEffect() != null)
+                enemy.setDamageEffectNotVisible();
+        }
+    }
+
     private void checkCollisions(){
         collisionsPcObjects();
         collisionsEnemiesObjects();
         collisionsPCEnemies();
         collisionsSpellEnemies();
+        collisionSwordEnemies();
     }
 
     private void collisionsPcObjects(){ //se pc interseca con oggetto inanimato
@@ -190,7 +204,7 @@ public class Game extends JFrame implements ActionListener {
             if(r1.intersects(r3)){
                 blockPcMovement();
                 blockEnemyMovement(enemy);
-                //pc.getDamage(enemy);
+                pc.getDamaged(enemy);
             }
         }
     }
@@ -206,7 +220,21 @@ public class Game extends JFrame implements ActionListener {
                 if (r4.intersects(r3)) {
                     blockEnemyMovement(enemy);
                     spell.setVisible(false);
-                    //enemy.getDamage(pc);
+                    enemy.getDamaged(pc);
+                }
+            }
+        }
+    }
+
+    private void collisionSwordEnemies() { //se nemico interseca con sword
+        if (pc.getSword() != null) {
+            Sword sword = pc.getSword();
+            Rectangle r1 = sword.getBounds();
+            for (Enemy enemy : enemies) {
+                Rectangle r2 = enemy.getBounds();
+                if (r1.intersects(r2)) {
+                    blockEnemyMovement(enemy);
+                    enemy.getDamaged(pc);
                 }
             }
         }
@@ -253,6 +281,31 @@ public class Game extends JFrame implements ActionListener {
                 sp.remove(i);
             }
         }
+    }
+
+    private void teleport(){
+        //creo seconda stanza
+        //creo background
+        ImageIcon imageIcon = new ImageIcon("src/resources/ground.png");
+        Background background = new Background(imageIcon);
+
+        //creo pc
+        pc = new PC(5, 5, "down", 100, 100);
+
+        //creo lista di oggetti
+        //objects.add(new Tree(100,100));
+        objects.add(new Tree(350,350));
+
+        //creo lista di nemici
+        //enemies.add(new Skeleton(200,200, 100, 100));
+        enemies.add(new Skeleton(200,200, 100, 100));
+
+        //inizializzo la stanza
+        Room room2 = new Room(this, background, pc, objects, enemies);
+        add(room2);
+        room1.setVisible(false);
+
+        setVisible(true);
     }
 
     public static void main(String[] args) {

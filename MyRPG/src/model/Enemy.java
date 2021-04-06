@@ -1,8 +1,10 @@
 package model;
 
 public abstract class Enemy extends Creature{
-    public Enemy(int x, int y) {
-        super(x, y);
+
+    private DamageEffect damageEffect;
+    public Enemy(int x, int y, int MAX_HP, int hp) {
+        super(x, y, MAX_HP, hp);
     }
 
     public abstract void move(PC pc);

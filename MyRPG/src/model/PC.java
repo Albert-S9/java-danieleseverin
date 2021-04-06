@@ -7,17 +7,20 @@ import java.util.List;
 
 public class PC extends Creature{
 
-    String direction;
+    private String direction;
     private List<Spell> spells = new ArrayList<>();
+    private Sword sword;
+    private boolean attacking = false;
 
     ImageIcon mage_down = new ImageIcon("src/resources/mage-down.png");
     ImageIcon mage_up = new ImageIcon("src/resources/mage-up.png");
     ImageIcon mage_left = new ImageIcon("src/resources/mage-left.png");
     ImageIcon mage_right = new ImageIcon("src/resources/mage-right.png");
 
-    public PC(int x, int y, String direction) {
-        super(x, y);
+    public PC(int x, int y, String direction, int MAX_HP, int hp) {
+        super(x, y, MAX_HP, hp);
         this.direction = direction;
+        this.damage = 10;
         loadImage();
         setDimensions();
     }
@@ -65,5 +68,25 @@ public class PC extends Creature{
 
     public List<Spell> getSpells() {
         return spells;
+    }
+
+    public void attack(){
+        sword = new Sword(this);
+    }
+
+    public Sword getSword() {
+        return sword;
+    }
+
+    public void setSword(Sword sword) {
+        this.sword = sword;
+    }
+
+    public boolean isAttacking() {
+        return attacking;
+    }
+
+    public void setAttacking(boolean attacking) {
+        this.attacking = attacking;
     }
 }
