@@ -13,7 +13,7 @@ import java.util.List;
 
 public class Game extends JFrame implements ActionListener {
 
-    private Room room1;
+    private Dungeon dungeon;
     private PC pc;
     private List<SolidObject> objects = new ArrayList<>();
     private List<Enemy> enemies = new ArrayList<>();
@@ -32,25 +32,9 @@ public class Game extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
         setResizable(true);
 
-        //creo prima stanza
-        //creo background
-        ImageIcon imageIcon = new ImageIcon("src/resources/grass.png");
-        Background background = new Background(imageIcon);
-
-        //creo pc
         pc = new PC(5, 5, "down", 100, 100);
-
-        //creo lista di oggetti
-        objects.add(new Tree(100,100));
-        objects.add(new Tree(300,300));
-
-        //creo lista di nemici
-        enemies.add(new Skeleton(200,200, 100, 100));
-        enemies.add(new Skeleton(400,200, 100, 100));
-
-        //inizializzo la stanza
-        room1 = new Room(this, background, pc, objects, enemies);
-        add(room1);
+        dungeon = new Dungeon(this, pc);
+        add(dungeon.getRoom1());
 
         setVisible(true);
 
@@ -63,7 +47,7 @@ public class Game extends JFrame implements ActionListener {
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_SPACE) {
-            teleport();
+            //teleport();
         }
 
         if (key == KeyEvent.VK_Z) {
@@ -281,31 +265,6 @@ public class Game extends JFrame implements ActionListener {
                 sp.remove(i);
             }
         }
-    }
-
-    private void teleport(){
-        //creo seconda stanza
-        //creo background
-        ImageIcon imageIcon = new ImageIcon("src/resources/ground.png");
-        Background background = new Background(imageIcon);
-
-        //creo pc
-        pc = new PC(5, 5, "down", 100, 100);
-
-        //creo lista di oggetti
-        //objects.add(new Tree(100,100));
-        objects.add(new Tree(350,350));
-
-        //creo lista di nemici
-        //enemies.add(new Skeleton(200,200, 100, 100));
-        enemies.add(new Skeleton(200,200, 100, 100));
-
-        //inizializzo la stanza
-        Room room2 = new Room(this, background, pc, objects, enemies);
-        add(room2);
-        room1.setVisible(false);
-
-        setVisible(true);
     }
 
     public static void main(String[] args) {

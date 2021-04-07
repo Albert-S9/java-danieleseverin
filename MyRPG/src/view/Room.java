@@ -17,16 +17,41 @@ public class Room extends JPanel{
     private List<SolidObject> objects;
     private List<Enemy> enemies;
 
-    public Room(Game game, Background background, PC pc, List<SolidObject> objects, List<Enemy> enemies) {
+    private Door doorUp;
+    private Door doorDown;
+    private Door doorLeft;
+    private Door doorRight;
+
+    public Room(Game game, Background background, PC pc, List<SolidObject> objects, List<Enemy> enemies,
+                Room roomUp, Room roomDown, Room roomLeft, Room roomRight) {
         this.game = game;
         this.background = background;
         this.pc = pc;
         this.objects = objects;
+        System.out.println("Elementi objects: " + objects.size());
         this.enemies = enemies;
+        System.out.println("Elementi enemies: " + enemies.size());
+
+        initDoors(roomUp, roomDown, roomLeft, roomRight);
 
         addKeyListener(new TAdapter());
         setBackground(Color.black);
         setFocusable(true);
+    }
+
+    private void initDoors(Room roomUp, Room roomDown, Room roomLeft, Room roomRight){
+        if(roomUp != null){
+            doorUp = new Door(400, 0, "up", roomUp);
+        }
+        if(roomDown != null){
+            doorDown = new Door(400, 0, "down", roomDown);
+        }
+        if(roomLeft != null){
+            doorLeft = new Door(400, 0, "left", roomLeft);
+        }
+        if(roomRight != null){
+            doorRight = new Door(400, 0, "right", roomRight);
+        }
     }
 
     @Override
@@ -38,6 +63,7 @@ public class Room extends JPanel{
 
     private void doDrawing(Graphics g) {
         drawBackground(g);
+        drawDoors(g);
         drawPC(g);
         drawEnemies(g);
         drawDamageEffect(g);
@@ -50,6 +76,21 @@ public class Room extends JPanel{
 
     private void drawBackground(Graphics g) {
         g.drawImage(background.getImage(), background.getX(), background.getY(), this);
+    }
+
+    private void drawDoors(Graphics g) {
+        if(doorUp != null){
+            g.drawImage(doorUp.getImage(), doorUp.getX(), doorUp.getY(), this);
+        }
+        if(doorDown != null){
+            g.drawImage(doorDown.getImage(), doorDown.getX(), doorDown.getY(), this);
+        }
+        if(doorLeft != null){
+            g.drawImage(doorLeft.getImage(), doorLeft.getX(), doorLeft.getY(), this);
+        }
+        if(doorRight != null){
+            g.drawImage(doorRight.getImage(), doorRight.getX(), doorRight.getY(), this);
+        }
     }
 
     private void drawPC(Graphics g){
