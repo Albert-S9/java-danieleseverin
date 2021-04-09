@@ -1,7 +1,5 @@
 package model;
 
-import view.Room;
-
 import javax.swing.*;
 
 public class Door extends SolidObject{

@@ -3,55 +3,27 @@ package view;
 import controller.Game;
 import model.*;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import javax.swing.*;
 import java.util.List;
 
-public class Room extends JPanel{
+public class View extends JPanel {
 
     private Game game;
-    private Background background;
+    private Room room;
     private PC pc;
-    private List<SolidObject> objects;
-    private List<Enemy> enemies;
 
-    private Door doorUp;
-    private Door doorDown;
-    private Door doorLeft;
-    private Door doorRight;
+    public View(Game game, Room room, PC pc) {
 
-    public Room(Game game, Background background, PC pc, List<SolidObject> objects, List<Enemy> enemies,
-                Room roomUp, Room roomDown, Room roomLeft, Room roomRight) {
         this.game = game;
-        this.background = background;
+        this.room = room;
         this.pc = pc;
-        this.objects = objects;
-        System.out.println("Elementi objects: " + objects.size());
-        this.enemies = enemies;
-        System.out.println("Elementi enemies: " + enemies.size());
-
-        initDoors(roomUp, roomDown, roomLeft, roomRight);
 
         addKeyListener(new TAdapter());
         setBackground(Color.black);
         setFocusable(true);
-    }
-
-    private void initDoors(Room roomUp, Room roomDown, Room roomLeft, Room roomRight){
-        if(roomUp != null){
-            doorUp = new Door(400, 0, "up", roomUp);
-        }
-        if(roomDown != null){
-            doorDown = new Door(400, 0, "down", roomDown);
-        }
-        if(roomLeft != null){
-            doorLeft = new Door(400, 0, "left", roomLeft);
-        }
-        if(roomRight != null){
-            doorRight = new Door(400, 0, "right", roomRight);
-        }
     }
 
     @Override
@@ -75,21 +47,26 @@ public class Room extends JPanel{
     }
 
     private void drawBackground(Graphics g) {
-        g.drawImage(background.getImage(), background.getX(), background.getY(), this);
+        g.drawImage(room.getBackground().getImage(), room.getBackground().getX(),
+                room.getBackground().getY(), this);
     }
 
     private void drawDoors(Graphics g) {
-        if(doorUp != null){
-            g.drawImage(doorUp.getImage(), doorUp.getX(), doorUp.getY(), this);
+        if(room.getDoorUp() != null){
+            g.drawImage(room.getDoorUp().getImage(), room.getDoorUp().getX(),
+                    room.getDoorUp().getY(), this);
         }
-        if(doorDown != null){
-            g.drawImage(doorDown.getImage(), doorDown.getX(), doorDown.getY(), this);
+        if(room.getDoorDown() != null){
+            g.drawImage(room.getDoorDown().getImage(), room.getDoorDown().getX(),
+                    room.getDoorDown().getY(), this);
         }
-        if(doorLeft != null){
-            g.drawImage(doorLeft.getImage(), doorLeft.getX(), doorLeft.getY(), this);
+        if(room.getDoorLeft() != null){
+            g.drawImage(room.getDoorLeft().getImage(), room.getDoorLeft().getX(),
+                    room.getDoorLeft().getY(), this);
         }
-        if(doorRight != null){
-            g.drawImage(doorRight.getImage(), doorRight.getX(), doorRight.getY(), this);
+        if(room.getDoorRight() != null){
+            g.drawImage(room.getDoorRight().getImage(), room.getDoorRight().getX(),
+                    room.getDoorRight().getY(), this);
         }
     }
 
@@ -98,13 +75,13 @@ public class Room extends JPanel{
     }
 
     private void drawObjects(Graphics g){
-        for (SolidObject obj : objects){
+        for (SolidObject obj : room.getObjects()){
             g.drawImage(obj.getImage(), obj.getX(), obj.getY(), this);
         }
     }
 
     private void drawEnemies(Graphics g){
-        for (Enemy obj : enemies){
+        for (Enemy obj : room.getEnemies()){
             g.drawImage(obj.getImage(), obj.getX(), obj.getY(), this);
         }
     }
@@ -114,7 +91,7 @@ public class Room extends JPanel{
         if (de != null && de.isVisible())
             g.drawImage(de.getImage(), de.getX(), de.getY(), this);
 
-        for (Enemy enemy : enemies) {
+        for (Enemy enemy : room.getEnemies()) {
             DamageEffect da = enemy.getDamageEffect();
             if (da != null && da.isVisible())
                 g.drawImage(da.getImage(), da.getX(), da.getY(), this);
@@ -151,3 +128,4 @@ public class Room extends JPanel{
         }
     }
 }
+

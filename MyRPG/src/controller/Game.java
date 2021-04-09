@@ -1,22 +1,22 @@
 package controller;
 
 import model.*;
-import view.Room;
+import view.View;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Game extends JFrame implements ActionListener {
 
     private Dungeon dungeon;
     private PC pc;
-    private List<SolidObject> objects = new ArrayList<>();
-    private List<Enemy> enemies = new ArrayList<>();
+    private Room currentRoom;
+    private List<SolidObject> objects;
+    private List<Enemy> enemies;
 
     private static final int width = 800;
     private static final int height = 500;
@@ -33,8 +33,9 @@ public class Game extends JFrame implements ActionListener {
         setResizable(true);
 
         pc = new PC(5, 5, "down", 100, 100);
-        dungeon = new Dungeon(this, pc);
-        add(dungeon.getRoom1());
+        dungeon = new Dungeon();
+        currentRoom = dungeon.getRoom1();
+        add(new View(this, currentRoom, pc));
 
         setVisible(true);
 
@@ -45,10 +46,6 @@ public class Game extends JFrame implements ActionListener {
     public void keyPressed(KeyEvent e) {
 
         int key = e.getKeyCode();
-
-        if (key == KeyEvent.VK_SPACE) {
-            //teleport();
-        }
 
         if (key == KeyEvent.VK_Z) {
             pc.fire();
@@ -120,11 +117,17 @@ public class Game extends JFrame implements ActionListener {
     }
 
     private void gameCycle(){
+        initElements();
         move();
         updateDamageEffect();
         checkCollisions();
         repaint();
         updateSpells();
+    }
+
+    private void initElements(){
+        enemies = currentRoom.getEnemies();
+        objects = currentRoom.getObjects();
     }
 
     private void move(){
