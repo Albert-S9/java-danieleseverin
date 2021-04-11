@@ -22,6 +22,11 @@ public class Dungeon {
         createRoom2();
         createRoom3();
         createRoom4();
+
+        createRoom1();
+        createRoom2();
+        createRoom3();
+        createRoom4();
     }
 
     private void resetlists(){

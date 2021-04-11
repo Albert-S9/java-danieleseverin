@@ -14,29 +14,28 @@ public class Room {
     private Door doorRight;
 
     public Room(Background background, List<SolidObject> objects, List<Enemy> enemies,
-                Room roomUp, Room roomDown, Room roomLeft, Room roomRight) {
+                Room roomUp, Room roomRight, Room roomDown, Room roomLeft) {
 
         this.background = background;
         this.objects = objects;
         this.enemies = enemies;
 
-        initDoors(roomUp, roomDown, roomLeft, roomRight);
+        initDoors(roomUp, roomRight, roomDown, roomLeft);
     }
 
-    private void initDoors(Room roomUp, Room roomDown, Room roomLeft, Room roomRight) {
+    private void initDoors(Room roomUp,  Room roomRight, Room roomDown, Room roomLeft) {
         if (roomUp != null) {
             doorUp = new Door(400, 20, "up", roomUp);
+        }
+        if (roomRight != null) {
+            doorRight = new Door(500, 250, "right", roomRight);
+            System.out.println(doorRight);
         }
         if (roomDown != null) {
             doorDown = new Door(400, 450, "down", roomDown);
         }
         if (roomLeft != null) {
             doorLeft = new Door(20, 250, "left", roomLeft);
-        }
-        if (roomRight != null) {
-            System.out.println("prova");
-            doorRight = new Door(700, 250, "right", roomRight);
-            System.out.println("room right");
         }
     }
 
@@ -65,6 +64,7 @@ public class Room {
     }
 
     public Door getDoorRight() {
+        System.out.println(doorRight);
         return doorRight;
     }
 }
