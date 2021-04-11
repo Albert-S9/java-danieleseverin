@@ -54,7 +54,7 @@ public class Dungeon {
         enemies.add(new Skeleton(100, 100, 100, 100));
         room1 = new Room(background, objects, enemies,
                             null, room2, room3, null);
-        //se passo getRoom ora è null, perché le stanze oltre la prima non sono state inizializzate
+        //roomX ora è null, perché le stanze oltre la prima non sono state create
     }
 
     //room2

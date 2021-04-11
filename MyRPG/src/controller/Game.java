@@ -237,6 +237,8 @@ public class Game extends JFrame implements ActionListener {
             Rectangle r2 = currentRoom.getDoorUp().getBounds();
             if (r1.intersects(r2)) {
                 currentRoom = currentRoom.getDoorUp().getNextRoom();
+                pc.setX(currentRoom.getDoorDown().getX());
+                pc.setY(currentRoom.getDoorDown().getY() + currentRoom.getDoorDown().getHeight());
                 view.setRoom(currentRoom);
             }
         }
@@ -255,6 +257,8 @@ public class Game extends JFrame implements ActionListener {
             Rectangle r2 = currentRoom.getDoorDown().getBounds();
             if (r1.intersects(r2)) {
                 currentRoom = currentRoom.getDoorDown().getNextRoom();
+                pc.setX(currentRoom.getDoorUp().getX());
+                pc.setY(currentRoom.getDoorUp().getY() + currentRoom.getDoorUp().getHeight());
                 view.setRoom(currentRoom);
             }
         }

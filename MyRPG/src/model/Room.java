@@ -25,7 +25,7 @@ public class Room {
 
     private void initDoors(Room roomUp,  Room roomRight, Room roomDown, Room roomLeft) {
         if (roomUp != null) {
-            doorUp = new Door(350, 50, "up", roomUp);
+            doorUp = new Door(350, 0, "up", roomUp);
         }
         if (roomRight != null) {
             doorRight = new Door(750, 200, "right", roomRight);
