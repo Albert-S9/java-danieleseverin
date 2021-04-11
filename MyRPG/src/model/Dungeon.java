@@ -27,6 +27,16 @@ public class Dungeon {
         createRoom2();
         createRoom3();
         createRoom4();
+
+        createRoom1();
+        createRoom2();
+        createRoom3();
+        createRoom4();
+
+        createRoom1();
+        createRoom2();
+        createRoom3();
+        createRoom4();
     }
 
     private void resetlists(){
@@ -58,7 +68,7 @@ public class Dungeon {
         enemies.add(new Skeleton(100, 100, 100, 100));
         enemies.add(new Skeleton(200, 200, 100, 100));
         room2 = new Room(background, objects, enemies,
-                            null, null, getRoom4(), getRoom1());
+                            null, null, room4, room1);
     }
 
     //room3
@@ -74,7 +84,7 @@ public class Dungeon {
         enemies.add(new Skeleton(200, 200, 100, 100));
         enemies.add(new Skeleton(300, 300, 100, 100));
         room3 = new Room(background, objects, enemies,
-                            getRoom1(), getRoom4(), null, null);
+                            room1, room4, null, null);
     }
 
     //room4
@@ -92,7 +102,7 @@ public class Dungeon {
         enemies.add(new Skeleton(300, 300, 100, 100));
         enemies.add(new Skeleton(400, 400, 100, 100));
         room4 = new Room(background, objects, enemies,
-                            getRoom2(), null, null, getRoom3());
+                            room2, null, null, room3);
     }
 
     public Room getRoom1() {

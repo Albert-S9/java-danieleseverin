@@ -25,17 +25,16 @@ public class Room {
 
     private void initDoors(Room roomUp,  Room roomRight, Room roomDown, Room roomLeft) {
         if (roomUp != null) {
-            doorUp = new Door(400, 20, "up", roomUp);
+            doorUp = new Door(350, 50, "up", roomUp);
         }
         if (roomRight != null) {
-            doorRight = new Door(500, 250, "right", roomRight);
-            System.out.println(doorRight);
+            doorRight = new Door(750, 200, "right", roomRight);
         }
         if (roomDown != null) {
-            doorDown = new Door(400, 450, "down", roomDown);
+            doorDown = new Door(350, 420, "down", roomDown);
         }
         if (roomLeft != null) {
-            doorLeft = new Door(20, 250, "left", roomLeft);
+            doorLeft = new Door(0, 200, "left", roomLeft);
         }
     }
 
@@ -64,7 +63,6 @@ public class Room {
     }
 
     public Door getDoorRight() {
-        System.out.println(doorRight);
         return doorRight;
     }
 }

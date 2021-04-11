@@ -12,6 +12,7 @@ import java.util.List;
 
 public class Game extends JFrame implements ActionListener {
 
+    private View view;
     private Dungeon dungeon;
     private PC pc;
     private Room currentRoom;
@@ -35,7 +36,8 @@ public class Game extends JFrame implements ActionListener {
         pc = new PC(5, 5, "down", 100, 100);
         dungeon = new Dungeon();
         currentRoom = dungeon.getRoom1();
-        add(new View(this, currentRoom, pc));
+        view = new View(this, currentRoom, pc);
+        add(view);
 
         setVisible(true);
 
@@ -154,6 +156,7 @@ public class Game extends JFrame implements ActionListener {
         collisionsPCEnemies();
         collisionsSpellEnemies();
         collisionSwordEnemies();
+        collisionPCDoors();
     }
 
     private void collisionsPcObjects(){ //se pc interseca con oggetto inanimato
@@ -223,6 +226,46 @@ public class Game extends JFrame implements ActionListener {
                     blockEnemyMovement(enemy);
                     enemy.getDamaged(pc);
                 }
+            }
+        }
+    }
+
+    private void collisionPCDoors(){
+        Rectangle r1 = pc.getBounds();
+
+        if(currentRoom.getDoorUp() != null){
+            Rectangle r2 = currentRoom.getDoorUp().getBounds();
+            if (r1.intersects(r2)) {
+                currentRoom = currentRoom.getDoorUp().getNextRoom();
+                view.setRoom(currentRoom);
+            }
+        }
+
+        if(currentRoom.getDoorRight() != null){
+            Rectangle r2 = currentRoom.getDoorRight().getBounds();
+            if (r1.intersects(r2)) {
+                currentRoom = currentRoom.getDoorRight().getNextRoom();
+                pc.setX(currentRoom.getDoorLeft().getX() + currentRoom.getDoorLeft().getWidth());
+                pc.setY(currentRoom.getDoorLeft().getY());
+                view.setRoom(currentRoom);
+            }
+        }
+
+        if(currentRoom.getDoorDown() != null){
+            Rectangle r2 = currentRoom.getDoorDown().getBounds();
+            if (r1.intersects(r2)) {
+                currentRoom = currentRoom.getDoorDown().getNextRoom();
+                view.setRoom(currentRoom);
+            }
+        }
+
+        if(currentRoom.getDoorLeft() != null){
+            Rectangle r2 = currentRoom.getDoorLeft().getBounds();
+            if (r1.intersects(r2)) {
+                currentRoom = currentRoom.getDoorLeft().getNextRoom();
+                pc.setX(currentRoom.getDoorRight().getX() + currentRoom.getDoorRight().getWidth());
+                pc.setY(currentRoom.getDoorRight().getY());
+                view.setRoom(currentRoom);
             }
         }
     }

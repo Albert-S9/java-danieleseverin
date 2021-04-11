@@ -48,4 +48,8 @@ public class Door extends SolidObject{
         setWidth(getImage().getWidth(null));
         setHeight(getImage().getHeight(null));
     }
+
+    public Room getNextRoom() {
+        return nextRoom;
+    }
 }

@@ -26,6 +26,10 @@ public class View extends JPanel {
         setFocusable(true);
     }
 
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -36,8 +40,8 @@ public class View extends JPanel {
     private void doDrawing(Graphics g) {
         drawBackground(g);
         drawDoors(g);
-        drawPC(g);
         drawEnemies(g);
+        drawPC(g);
         drawDamageEffect(g);
         drawObjects(g);
         drawSpells(g);
