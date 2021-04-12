@@ -6,118 +6,81 @@ import java.util.List;
 
 public class Dungeon {
 
-    private Room room1;
-    private Room room2;
-    private Room room3;
-    private Room room4;
-
-    private List<SolidObject> objects;
-    private List<Enemy> enemies;
+    private ArrayList<Room> rooms;
 
     ImageIcon imageIcon = new ImageIcon("src/resources/grass.png");
     Background background = new Background(imageIcon);
 
     public Dungeon() {
-        createRoom1();
-        createRoom2();
-        createRoom3();
-        createRoom4();
 
-        createRoom1();
-        createRoom2();
-        createRoom3();
-        createRoom4();
-
-        createRoom1();
-        createRoom2();
-        createRoom3();
-        createRoom4();
-
-        createRoom1();
-        createRoom2();
-        createRoom3();
-        createRoom4();
+        rooms = new ArrayList<>();
+        createRooms();
     }
 
-    private void resetlists(){
+    public void createRooms() {
+
+        // ROOM 0
+        List<SolidObject> objects = new ArrayList<>();
+        List<Enemy> enemies = new ArrayList<>();
+
+        rooms.add(new Room(background, objects, enemies));
+
+
+        // ROOM 1
         objects = new ArrayList<>();
         enemies = new ArrayList<>();
-    }
-
-    //room1
-    public void createRoom1() {
-
-        resetlists();
 
         objects.add(new Tree(500, 300));
-
-        enemies.add(new Skeleton(100, 100, 100, 100));
-        room1 = new Room(background, objects, enemies,
-                            null, room2, room3, null);
-        //roomX ora è null, perché le stanze oltre la prima non sono state create
-    }
-
-    //room2
-    public void createRoom2() {
-
-        resetlists();
-
-        objects.add(new Tree(500, 300));
-        objects.add(new Tree(200, 300));
-
-        enemies.add(new Skeleton(100, 100, 100, 100));
         enemies.add(new Skeleton(200, 200, 100, 100));
-        room2 = new Room(background, objects, enemies,
-                            null, null, room4, room1);
-    }
+        rooms.add(new Room(background, objects, enemies));
 
-    //room3
-    public void createRoom3() {
 
-        resetlists();
+        // ROOM 2
+        objects = new ArrayList<>();
+        enemies = new ArrayList<>();
 
-        objects.add(new Tree(500, 300));
+
         objects.add(new Tree(200, 300));
         objects.add(new Tree(500, 100));
 
-        enemies.add(new Skeleton(100, 100, 100, 100));
         enemies.add(new Skeleton(200, 200, 100, 100));
         enemies.add(new Skeleton(300, 300, 100, 100));
-        room3 = new Room(background, objects, enemies,
-                            room1, room4, null, null);
-    }
+        rooms.add(new Room(background, objects, enemies));
 
-    //room4
-    public void createRoom4() {
 
-        resetlists();
+        // ROOM 3
+        objects = new ArrayList<>();
+        enemies = new ArrayList<>();
 
-        objects.add(new Tree(500, 300));
         objects.add(new Tree(200, 300));
         objects.add(new Tree(500, 100));
         objects.add(new Tree(200, 100));
 
-        enemies.add(new Skeleton(100, 100, 100, 100));
         enemies.add(new Skeleton(200, 200, 100, 100));
         enemies.add(new Skeleton(300, 300, 100, 100));
         enemies.add(new Skeleton(400, 400, 100, 100));
-        room4 = new Room(background, objects, enemies,
-                            room2, null, null, room3);
+        rooms.add(new Room(background, objects, enemies));
+
+
+        Room room0 = rooms.get(0);
+        Room room1 = rooms.get(1);
+        Room room2 = rooms.get(2);
+        Room room3 = rooms.get(3);
+
+        room0.initDoor(room1, DoorPosition.RIGHT);
+        room0.initDoor(room2, DoorPosition.DOWN);
+
+        room1.initDoor(room0, DoorPosition.LEFT);
+        room1.initDoor(room3, DoorPosition.DOWN);
+
+        room2.initDoor(room0, DoorPosition.UP);
+        room2.initDoor(room3, DoorPosition.RIGHT);
+
+        room3.initDoor(room1, DoorPosition.UP);
+        room3.initDoor(room2, DoorPosition.LEFT);
     }
 
-    public Room getRoom1() {
-        return room1;
-    }
-
-    public Room getRoom2() {
-        return room2;
-    }
-
-    public Room getRoom3() {
-        return room3;
-    }
-
-    public Room getRoom4() {
-        return room4;
+    public Room getRoom(int index) {
+        return rooms.get(index);
     }
 }

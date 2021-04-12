@@ -35,7 +35,7 @@ public class Game extends JFrame implements ActionListener {
 
         pc = new PC(5, 5, "down", 100, 100);
         dungeon = new Dungeon();
-        currentRoom = dungeon.getRoom1();
+        currentRoom = dungeon.getRoom(0);
         view = new View(this, currentRoom, pc);
         add(view);
 
@@ -238,7 +238,7 @@ public class Game extends JFrame implements ActionListener {
             if (r1.intersects(r2)) {
                 currentRoom = currentRoom.getDoorUp().getNextRoom();
                 pc.setX(currentRoom.getDoorDown().getX());
-                pc.setY(currentRoom.getDoorDown().getY() + currentRoom.getDoorDown().getHeight());
+                pc.setY(currentRoom.getDoorDown().getY() - currentRoom.getDoorDown().getHeight());
                 view.setRoom(currentRoom);
             }
         }
@@ -267,7 +267,7 @@ public class Game extends JFrame implements ActionListener {
             Rectangle r2 = currentRoom.getDoorLeft().getBounds();
             if (r1.intersects(r2)) {
                 currentRoom = currentRoom.getDoorLeft().getNextRoom();
-                pc.setX(currentRoom.getDoorRight().getX() + currentRoom.getDoorRight().getWidth());
+                pc.setX(currentRoom.getDoorRight().getX() - currentRoom.getDoorRight().getWidth());
                 pc.setY(currentRoom.getDoorRight().getY());
                 view.setRoom(currentRoom);
             }
