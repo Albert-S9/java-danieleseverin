@@ -9,9 +9,13 @@ public class Dungeon {
 
     private ArrayList<Room> rooms;
 
+    List<SolidObject> objects = new ArrayList<>();
+    List<Enemy> enemies = new ArrayList<>();
+
     ImageIcon imageIcon = new ImageIcon("src/resources/grass.png");
     Background background = new Background(imageIcon);
     Random rand = new Random();
+    int max_n_rooms = 9;
 
     public Dungeon() {
 
@@ -21,13 +25,12 @@ public class Dungeon {
 
     public void createRooms() {
 
-        int nRooms = rand.nextInt(5)+5;
-        int token_doors = nRooms;
+        int token_doors = max_n_rooms;
 
-        List<SolidObject> objects = new ArrayList<>();
-        List<Enemy> enemies = new ArrayList<>();
+        for (int i = 0; i< max_n_rooms; i++) {
 
-        for (int i=0; i<nRooms; i++) {
+            objects = new ArrayList<>();
+            enemies = new ArrayList<>();
 
             //aggiungi nemici
             int nEnemy = rand.nextInt(6);
@@ -35,33 +38,39 @@ public class Dungeon {
                 enemies.add(new Skeleton(rand.nextInt(700)+50, rand.nextInt(400)+50, 100, 100));
             }
 
+            //numero casuale di porte della stanza
             int nDoors = rand.nextInt(2) + 1;
             if (token_doors >= nDoors)
                 token_doors -= nDoors;
-            else
+            else {
                 nDoors = token_doors;
+                token_doors = 0;
+            }
 
             rooms.add(new Room(background, objects, enemies, nDoors));
+
+            if(token_doors <= 0)
+                break;
         }
 
         //genera i collegamenti tra le stanze
-        for (int i=0; i<nRooms; i++){
+        for (int i = 0; i< rooms.size(); i++){
 
-            //controlla se una stanza si collega alla stanza corrente
-            //se si, crea una porta nella direzione opposta
+            //controlla se una qualsiasi stanza si collega alla stanza corrente
+            //se si, crea una porta nella stanza corrente nella direzione opposta
 
-            for (int j=0; j<nRooms; j++){
-               if(rooms.get(j).getDoorUp().getNextRoom() == rooms.get(i)){
-                   rooms.get(i).initDoor(rooms.get(j).getDoorUp().getNextRoom(), DoorPosition.DOWN);
+            for (int j = 0; j< rooms.size(); j++){
+               if(rooms.get(j).getDoorUp() != null && rooms.get(j).getDoorUp().getNextRoom() == rooms.get(i)){
+                   rooms.get(i).initDoor(rooms.get(j), DoorPosition.DOWN);
                }
-                if(rooms.get(j).getDoorRight().getNextRoom() == rooms.get(i)){
-                    rooms.get(i).initDoor(rooms.get(j).getDoorRight().getNextRoom(), DoorPosition.LEFT);
+                if(rooms.get(j).getDoorRight() != null && rooms.get(j).getDoorRight().getNextRoom() == rooms.get(i)){
+                    rooms.get(i).initDoor(rooms.get(j), DoorPosition.LEFT);
                 }
-                if(rooms.get(j).getDoorDown().getNextRoom() == rooms.get(i)){
-                    rooms.get(i).initDoor(rooms.get(j).getDoorDown().getNextRoom(), DoorPosition.UP);
+                if(rooms.get(j).getDoorDown() != null && rooms.get(j).getDoorDown().getNextRoom() == rooms.get(i)){
+                    rooms.get(i).initDoor(rooms.get(j), DoorPosition.UP);
                 }
-                if(rooms.get(j).getDoorLeft().getNextRoom() == rooms.get(i)){
-                    rooms.get(i).initDoor(rooms.get(j).getDoorLeft().getNextRoom(), DoorPosition.RIGHT);
+                if(rooms.get(j).getDoorLeft() != null && rooms.get(j).getDoorLeft().getNextRoom() == rooms.get(i)){
+                    rooms.get(i).initDoor(rooms.get(j), DoorPosition.RIGHT);
                 }
             }
 
@@ -72,29 +81,44 @@ public class Dungeon {
                 int dir = rand.nextInt(4);
 
                 if(dir==0){
-                    if(rooms.get(i).getDoorUp() == null)
-                        rooms.get(i).initDoor(rooms.get(i+j+1), DoorPosition.UP);
+                    if(rooms.get(i).getDoorUp() == null) {
+                        if ((i+j+1) <= rooms.get(j).getDoors())
+                            rooms.get(i).initDoor(rooms.get(i + j + 1), DoorPosition.UP);
+                        else
+                            rooms.get(i).initDoor(rooms.get(i + j - 1), DoorPosition.UP);
+                    }
                     else
-                        dir += 1; //oppure richiama ricorsivamente questo metodo (da creare)
-                                    // però così resetta il contatore
+                        dir++;
                 }
                 if(dir==1){
-                    if(rooms.get(i).getDoorRight() == null)
-                        rooms.get(i).initDoor(rooms.get(i+j+1), DoorPosition.RIGHT);
+                    if(rooms.get(i).getDoorRight() == null) {
+                        if ((i+j+1) <= rooms.get(j).getDoors())
+                            rooms.get(i).initDoor(rooms.get(i + j + 1), DoorPosition.RIGHT);
+                        else
+                            rooms.get(i).initDoor(rooms.get(i + j - 1), DoorPosition.RIGHT);
+                    }
                     else
-                        dir += 1;
+                        dir++;
                 }
                 if(dir==2){
-                    if(rooms.get(i).getDoorDown() == null)
-                        rooms.get(i).initDoor(rooms.get(i+j+1), DoorPosition.DOWN);
+                    if(rooms.get(i).getDoorDown() == null) {
+                        if ((i+j+1) <= rooms.get(j).getDoors())
+                            rooms.get(i).initDoor(rooms.get(i + j + 1), DoorPosition.DOWN);
+                        else
+                            rooms.get(i).initDoor(rooms.get(i + j - 1), DoorPosition.DOWN);
+                    }
                     else
-                        dir += 1;
+                        dir++;
                 }
                 if(dir==3){
-                    if(rooms.get(i).getDoorLeft() == null)
-                        rooms.get(i).initDoor(rooms.get(i+j+1), DoorPosition.LEFT);
+                    if(rooms.get(i).getDoorLeft() == null) {
+                        if ((i+j+1) <= rooms.get(j).getDoors())
+                            rooms.get(i).initDoor(rooms.get(i + j + 1), DoorPosition.LEFT);
+                        else
+                            rooms.get(i).initDoor(rooms.get(i + j - 1), DoorPosition.LEFT);
+                    }
                     else
-                        dir += 1;
+                        j--;
                 }
             }
 
