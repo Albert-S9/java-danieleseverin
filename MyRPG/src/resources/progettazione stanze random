@@ -1,5 +1,5 @@
 DungeonFlooor: max 9 stanze per floor
-Ogni Floor ha una difficoltà incrementale,. ogni volta che si crea un floor la difficoltà aumenta di 1.
+Ogni Floor ha una difficoltà incrementale, ogni volta che si crea un floor la difficoltà aumenta di 1.
 
 token = max stanze
 ogni volta che crei una stanza trova un numero random di porte (da 1 a 4)
