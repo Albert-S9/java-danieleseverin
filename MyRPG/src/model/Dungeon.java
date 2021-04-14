@@ -15,7 +15,6 @@ public class Dungeon {
     ImageIcon imageIcon = new ImageIcon("src/resources/grass.png");
     Background background = new Background(imageIcon);
     Random rand = new Random();
-    int max_n_rooms = 9;
 
     public Dungeon() {
 
@@ -25,107 +24,68 @@ public class Dungeon {
 
     public void createRooms() {
 
-        int token_doors = max_n_rooms;
+        int nRooms = rand.nextInt(5)+5; //il n di stanze è compreso tra 5 e 9
+        int tokenRooms = nRooms;
+        int criticalPath = nRooms / 2; //il critical path è il numero di stanze tra quella iniziale e quella finale (comprese)
+        if(criticalPath < 3)
+            criticalPath = 3;
+        tokenRooms -= criticalPath;
 
-        for (int i = 0; i< max_n_rooms; i++) {
-
+        //creazione critical path
+        for(int i=0; i<criticalPath; i++){
             objects = new ArrayList<>();
             enemies = new ArrayList<>();
 
-            //aggiungi nemici
-            int nEnemy = rand.nextInt(6);
-            for(int j=0; j<nEnemy; j++){
+            int nEnemies = rand.nextInt(6);
+            for(int j=0; j<nEnemies; j++)
                 enemies.add(new Skeleton(rand.nextInt(700)+50, rand.nextInt(400)+50, 100, 100));
-            }
 
-            //numero casuale di porte della stanza
-            int nDoors = rand.nextInt(2) + 1;
-            if (token_doors >= nDoors)
-                token_doors -= nDoors;
-            else {
-                nDoors = token_doors;
-                token_doors = 0;
-            }
-
-            rooms.add(new Room(background, objects, enemies, nDoors));
-
-            if(token_doors <= 0)
-                break;
+            rooms.add(new Room(background, objects, enemies));
         }
 
-        //genera i collegamenti tra le stanze
-        for (int i = 0; i< rooms.size(); i++){
+        //collegamento critical path
+        for(int i=0; i<rooms.size(); i++){
+            int dir = rand.nextInt(4);
+            DoorPosition doorPosition;
 
-            //controlla se una qualsiasi stanza si collega alla stanza corrente
-            //se si, crea una porta nella stanza corrente nella direzione opposta
-
-            for (int j = 0; j< rooms.size(); j++){
-               if(rooms.get(j).getDoorUp() != null && rooms.get(j).getDoorUp().getNextRoom() == rooms.get(i)){
-                   rooms.get(i).initDoor(rooms.get(j), DoorPosition.DOWN);
-               }
-                if(rooms.get(j).getDoorRight() != null && rooms.get(j).getDoorRight().getNextRoom() == rooms.get(i)){
-                    rooms.get(i).initDoor(rooms.get(j), DoorPosition.LEFT);
-                }
-                if(rooms.get(j).getDoorDown() != null && rooms.get(j).getDoorDown().getNextRoom() == rooms.get(i)){
-                    rooms.get(i).initDoor(rooms.get(j), DoorPosition.UP);
-                }
-                if(rooms.get(j).getDoorLeft() != null && rooms.get(j).getDoorLeft().getNextRoom() == rooms.get(i)){
-                    rooms.get(i).initDoor(rooms.get(j), DoorPosition.RIGHT);
-                }
+            switch (dir){
+                case 0:
+                default:
+                    doorPosition = DoorPosition.UP;
+                    break;
+                case 1:
+                    doorPosition = DoorPosition.RIGHT;
+                    break;
+                case 2:
+                    doorPosition = DoorPosition.DOWN;
+                    break;
+                case 3:
+                    doorPosition = DoorPosition.LEFT;
+                    break;
             }
 
-            //cicla per nDoors volte creando ogni volta una porta in una direzione casuale
-            //controlla se nella direzione generata casualmente esiste già una porta
-            //se si, ripeti la generazione
-            for (int j=0; j<rooms.get(j).getDoors(); j++){
-                int dir = rand.nextInt(4);
+            if(i != criticalPath-1){ //crea porta per la prossima stanza
+                rooms.get(i).initDoor(rooms.get(i+1), doorPosition);
 
-                if(dir==0){
-                    if(rooms.get(i).getDoorUp() == null) {
-                        if ((i+j+1) <= rooms.get(j).getDoors())
-                            rooms.get(i).initDoor(rooms.get(i + j + 1), DoorPosition.UP);
-                        else
-                            rooms.get(i).initDoor(rooms.get(i + j - 1), DoorPosition.UP);
-                    }
-                    else
-                        dir++;
+            //crea porta nella prossima stanza per la stanza corrente
+                switch (dir){
+                    case 0:
+                    default:
+                        doorPosition = DoorPosition.DOWN;
+                        break;
+                    case 1:
+                        doorPosition = DoorPosition.LEFT;
+                        break;
+                    case 2:
+                        doorPosition = DoorPosition.UP;
+                        break;
+                    case 3:
+                        doorPosition = DoorPosition.RIGHT;
+                        break;
                 }
-                if(dir==1){
-                    if(rooms.get(i).getDoorRight() == null) {
-                        if ((i+j+1) <= rooms.get(j).getDoors())
-                            rooms.get(i).initDoor(rooms.get(i + j + 1), DoorPosition.RIGHT);
-                        else
-                            rooms.get(i).initDoor(rooms.get(i + j - 1), DoorPosition.RIGHT);
-                    }
-                    else
-                        dir++;
-                }
-                if(dir==2){
-                    if(rooms.get(i).getDoorDown() == null) {
-                        if ((i+j+1) <= rooms.get(j).getDoors())
-                            rooms.get(i).initDoor(rooms.get(i + j + 1), DoorPosition.DOWN);
-                        else
-                            rooms.get(i).initDoor(rooms.get(i + j - 1), DoorPosition.DOWN);
-                    }
-                    else
-                        dir++;
-                }
-                if(dir==3){
-                    if(rooms.get(i).getDoorLeft() == null) {
-                        if ((i+j+1) <= rooms.get(j).getDoors())
-                            rooms.get(i).initDoor(rooms.get(i + j + 1), DoorPosition.LEFT);
-                        else
-                            rooms.get(i).initDoor(rooms.get(i + j - 1), DoorPosition.LEFT);
-                    }
-                    else
-                        j--;
-                }
+                rooms.get(i+1).initDoor(rooms.get(i), doorPosition);
             }
-
-
-            //room0.initDoor(room1, DoorPosition.RIGHT);
         }
-
 
         /*
         // ROOM 0

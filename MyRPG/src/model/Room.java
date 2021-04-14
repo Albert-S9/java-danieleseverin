@@ -18,14 +18,11 @@ public class Room {
     private Room roomLeft;
     private Room roomRight;
 
-    private int doors;
-
-    public Room(Background background, List<SolidObject> objects, List<Enemy> enemies, int doors) {
+    public Room(Background background, List<SolidObject> objects, List<Enemy> enemies) {
 
         this.background = background;
         this.objects = objects;
         this.enemies = enemies;
-        this.doors = doors;
     }
 
     public void initDoor(Room room, DoorPosition doorPosition) {
@@ -73,9 +70,5 @@ public class Room {
 
     public Door getDoorRight() {
         return doorRight;
-    }
-
-    public int getDoors() {
-        return doors;
     }
 }
