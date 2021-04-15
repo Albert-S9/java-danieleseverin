@@ -1,6 +1,7 @@
 package controller;
 
 import model.*;
+import view.Startgame;
 import view.View;
 
 import javax.swing.*;
@@ -13,6 +14,7 @@ import java.util.List;
 public class Game extends JFrame implements ActionListener {
 
     private View view;
+    private Startgame startgame;
     private Dungeon dungeon;
     private PC pc;
     private Room currentRoom;
@@ -33,11 +35,16 @@ public class Game extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
         setResizable(true);
 
+        /*
         pc = new PC(5, 5, "down", 100, 100);
         dungeon = new Dungeon();
         currentRoom = dungeon.getRoom(0);
         view = new View(this, currentRoom, pc);
         add(view);
+         */
+
+        startgame = new Startgame(this);
+        add(startgame);
 
         setVisible(true);
 
@@ -49,41 +56,57 @@ public class Game extends JFrame implements ActionListener {
 
         int key = e.getKeyCode();
 
-        if (key == KeyEvent.VK_Z) {
-            pc.fire();
+        if(startgame != null) {
+            if (key == KeyEvent.VK_ENTER) {
+                System.out.println("check");
+                pc = new PC(5, 5, "down", 100, 100);
+                dungeon = new Dungeon();
+                currentRoom = dungeon.getRoom(0);
+                view = new View(this, currentRoom, pc);
+                add(view);
+                startgame.setVisible(false);
+                startgame = null;
+                setVisible(true);
+            }
         }
 
-        if (key == KeyEvent.VK_X) {
-            pc.attack();
-            pc.setAttacking(true);
-        }
+        if(view != null) {
+            if (key == KeyEvent.VK_Z) {
+                pc.fire();
+            }
 
-        if (key == KeyEvent.VK_LEFT) {
-            pc.setDx(-2);
-            pc.setDy(0);
-            pc.setDirection("left");
-            pc.loadImage();
-        }
+            if (key == KeyEvent.VK_X) {
+                pc.attack();
+                pc.setAttacking(true);
+            }
 
-        if (key == KeyEvent.VK_RIGHT) {
-            pc.setDx(2);
-            pc.setDy(0);
-            pc.setDirection("right");
-            pc.loadImage();
-        }
+            if (key == KeyEvent.VK_LEFT) {
+                pc.setDx(-2);
+                pc.setDy(0);
+                pc.setDirection("left");
+                pc.loadImage();
+            }
 
-        if (key == KeyEvent.VK_UP) {
-            pc.setDy(-2);
-            pc.setDx(0);
-            pc.setDirection("up");
-            pc.loadImage();
-        }
+            if (key == KeyEvent.VK_RIGHT) {
+                pc.setDx(2);
+                pc.setDy(0);
+                pc.setDirection("right");
+                pc.loadImage();
+            }
 
-        if (key == KeyEvent.VK_DOWN) {
-            pc.setDy(2);
-            pc.setDx(0);
-            pc.setDirection("down");
-            pc.loadImage();
+            if (key == KeyEvent.VK_UP) {
+                pc.setDy(-2);
+                pc.setDx(0);
+                pc.setDirection("up");
+                pc.loadImage();
+            }
+
+            if (key == KeyEvent.VK_DOWN) {
+                pc.setDy(2);
+                pc.setDx(0);
+                pc.setDirection("down");
+                pc.loadImage();
+            }
         }
     }
 
@@ -91,31 +114,34 @@ public class Game extends JFrame implements ActionListener {
 
         int key = e.getKeyCode();
 
-        if (key == KeyEvent.VK_X) {
-            pc.setAttacking(false);
-            pc.setSword(null);
-        }
+        if(view != null) {
+            if (key == KeyEvent.VK_X) {
+                pc.setAttacking(false);
+                pc.setSword(null);
+            }
 
-        if (key == KeyEvent.VK_LEFT) {
-            pc.setDx(0);
-        }
+            if (key == KeyEvent.VK_LEFT) {
+                pc.setDx(0);
+            }
 
-        if (key == KeyEvent.VK_RIGHT) {
-            pc.setDx(0);
-        }
+            if (key == KeyEvent.VK_RIGHT) {
+                pc.setDx(0);
+            }
 
-        if (key == KeyEvent.VK_UP) {
-            pc.setDy(0);
-        }
+            if (key == KeyEvent.VK_UP) {
+                pc.setDy(0);
+            }
 
-        if (key == KeyEvent.VK_DOWN) {
-            pc.setDy(0);
+            if (key == KeyEvent.VK_DOWN) {
+                pc.setDy(0);
+            }
         }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        gameCycle();
+        if(view != null)
+            gameCycle();
     }
 
     private void gameCycle(){
@@ -125,6 +151,7 @@ public class Game extends JFrame implements ActionListener {
         checkCollisions();
         repaint();
         updateSpells();
+        checkPcDeath();
     }
 
     private void initElements(){
@@ -314,6 +341,15 @@ public class Game extends JFrame implements ActionListener {
             } else {
                 sp.remove(i);
             }
+        }
+    }
+
+    private void checkPcDeath(){
+        if(pc.getHp() <=0){
+            startgame = new Startgame(this);
+            add(startgame);
+            view.setVisible(false);
+            setVisible(true);
         }
     }
 

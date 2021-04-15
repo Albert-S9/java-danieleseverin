@@ -1,6 +1,9 @@
 package view;
 
+import controller.Dungeon;
 import controller.Game;
+import model.PC;
+import model.Room;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,6 +13,11 @@ import java.awt.event.KeyEvent;
 public class Startgame extends JPanel {
 
     private Game game;
+    private View view;
+    private Dungeon dungeon;
+    private PC pc;
+    private Room currentRoom;
+    private Startgame startgame;
     ImageIcon startGame = new ImageIcon("src/resources/StartGame.png");
 
     public Startgame(Game game) {
@@ -30,15 +38,6 @@ public class Startgame extends JPanel {
 
     private void doDrawing(Graphics g) {
         g.drawImage(startGame.getImage(), 0, 0, this);
-    }
-
-    public void keyPressed(KeyEvent e) {
-
-        int key = e.getKeyCode();
-
-        if (key == KeyEvent.VK_ENTER) {
-
-        }
     }
 
     private class TAdapter extends KeyAdapter {

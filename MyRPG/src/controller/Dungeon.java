@@ -43,7 +43,7 @@ public class Dungeon {
             for(int j=0; j<nEnemies; j++)
                 enemies.add(new Skeleton(rand.nextInt(700)+50, rand.nextInt(400)+50, 100, 100));
             if(i == criticalPath-1)
-                enemies.add(new Boss(350, 200, 1000, 1000));
+                enemies.add(new Boss(350, 200, 500, 500));
 
             rooms.add(new Room(background, objects, enemies));
         }
