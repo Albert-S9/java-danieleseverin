@@ -13,20 +13,23 @@ import java.awt.event.KeyEvent;
 public class Startgame extends JPanel {
 
     private Game game;
-    private View view;
-    private Dungeon dungeon;
-    private PC pc;
-    private Room currentRoom;
-    private Startgame startgame;
     ImageIcon startGame = new ImageIcon("src/resources/StartGame.png");
+    ImageIcon gameOver = new ImageIcon("src/resources/GameOver.png");
+    Image image;
 
     public Startgame(Game game) {
 
         this.game = game;
 
+        image = startGame.getImage();
+
         addKeyListener(new Startgame.TAdapter());
         setBackground(Color.black);
         setFocusable(true);
+    }
+
+    public void switchToGameOver(){
+        image = gameOver.getImage();
     }
 
     @Override
@@ -37,7 +40,7 @@ public class Startgame extends JPanel {
     }
 
     private void doDrawing(Graphics g) {
-        g.drawImage(startGame.getImage(), 0, 0, this);
+        g.drawImage(image, 0, 0, this);
     }
 
     private class TAdapter extends KeyAdapter {

@@ -42,8 +42,10 @@ public class Dungeon {
             int nEnemies = rand.nextInt(6);
             for(int j=0; j<nEnemies; j++)
                 enemies.add(new Skeleton(rand.nextInt(700)+50, rand.nextInt(400)+50, 100, 100));
-            if(i == criticalPath-1)
-                enemies.add(new Boss(350, 200, 500, 500));
+            if(i == criticalPath-1){
+                Boss boss = new Boss(350, 200, 500, 500);
+                enemies.add(boss);
+            }
 
             rooms.add(new Room(background, objects, enemies));
         }
@@ -112,7 +114,7 @@ public class Dungeon {
                     rooms.get(i + 1).initDoor(rooms.get(i), doorPosition);
                 }
 
-                if(i > criticalPath-1) {
+            if(i > criticalPath-1) {
                     boolean test2 = true;
                     int connectingRoom = -1;
 
@@ -179,67 +181,6 @@ public class Dungeon {
 
                 }
         }
-
-        /*
-        // ROOM 0
-        List<SolidObject> objects = new ArrayList<>();
-        List<Enemy> enemies = new ArrayList<>();
-        rooms.add(new Room(background, objects, enemies));
-
-        // ROOM 1
-        objects = new ArrayList<>();
-        enemies = new ArrayList<>();
-
-        objects.add(new Tree(500, 300));
-        enemies.add(new Skeleton(200, 200, 100, 100));
-        rooms.add(new Room(background, objects, enemies));
-
-
-        // ROOM 2
-        objects = new ArrayList<>();
-        enemies = new ArrayList<>();
-
-
-        objects.add(new Tree(200, 300));
-        objects.add(new Tree(500, 100));
-
-        enemies.add(new Skeleton(200, 200, 100, 100));
-        enemies.add(new Skeleton(300, 300, 100, 100));
-        rooms.add(new Room(background, objects, enemies));
-
-
-        // ROOM 3
-        objects = new ArrayList<>();
-        enemies = new ArrayList<>();
-
-        objects.add(new Tree(200, 300));
-        objects.add(new Tree(500, 100));
-        objects.add(new Tree(200, 100));
-
-        enemies.add(new Skeleton(200, 200, 100, 100));
-        enemies.add(new Skeleton(300, 300, 100, 100));
-        enemies.add(new Skeleton(400, 400, 100, 100));
-        rooms.add(new Room(background, objects, enemies));
-
-        //load rooms
-        Room room0 = rooms.get(0);
-        Room room1 = rooms.get(1);
-        Room room2 = rooms.get(2);
-        Room room3 = rooms.get(3);
-
-        //doors
-        room0.initDoor(room1, DoorPosition.RIGHT);
-        room0.initDoor(room2, DoorPosition.DOWN);
-
-        room1.initDoor(room0, DoorPosition.LEFT);
-        room1.initDoor(room3, DoorPosition.DOWN);
-
-        room2.initDoor(room0, DoorPosition.UP);
-        room2.initDoor(room3, DoorPosition.RIGHT);
-
-        room3.initDoor(room1, DoorPosition.UP);
-        room3.initDoor(room2, DoorPosition.LEFT);
-         */
     }
 
     public Room getRoom(int index) {

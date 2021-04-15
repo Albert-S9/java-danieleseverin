@@ -39,4 +39,12 @@ public class Boss extends Enemy{
         if(getY()<1) setY(1);
         if(getY()>430) setY(430);
     }
+
+    @Override
+    public void die(){
+        image = death.getImage();
+        setWidth(0);
+        setHeight(0);
+        setCanMove(false);
+    }
 }

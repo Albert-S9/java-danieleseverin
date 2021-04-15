@@ -35,14 +35,6 @@ public class Game extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
         setResizable(true);
 
-        /*
-        pc = new PC(5, 5, "down", 100, 100);
-        dungeon = new Dungeon();
-        currentRoom = dungeon.getRoom(0);
-        view = new View(this, currentRoom, pc);
-        add(view);
-         */
-
         startgame = new Startgame(this);
         add(startgame);
 
@@ -58,15 +50,14 @@ public class Game extends JFrame implements ActionListener {
 
         if(startgame != null) {
             if (key == KeyEvent.VK_ENTER) {
-                System.out.println("check");
                 pc = new PC(5, 5, "down", 100, 100);
                 dungeon = new Dungeon();
                 currentRoom = dungeon.getRoom(0);
                 view = new View(this, currentRoom, pc);
                 add(view);
+                setVisible(true);
                 startgame.setVisible(false);
                 startgame = null;
-                setVisible(true);
             }
         }
 
@@ -346,7 +337,9 @@ public class Game extends JFrame implements ActionListener {
 
     private void checkPcDeath(){
         if(pc.getHp() <=0){
+            pc.setHp(1);
             startgame = new Startgame(this);
+            startgame.switchToGameOver();
             add(startgame);
             view.setVisible(false);
             setVisible(true);

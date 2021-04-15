@@ -71,6 +71,8 @@ public abstract class Creature extends SolidObject{
         damageEffect.setVisibility(false);
     }
 
+
+
     public void die(){
         image = death.getImage();
         setWidth(0);
